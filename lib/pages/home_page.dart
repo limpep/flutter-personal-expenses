@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:personalexpensesapp/components/chart.dart';
 import 'package:personalexpensesapp/components/new_transaction.dart';
 import 'package:personalexpensesapp/components/transaction_list.dart';
 
@@ -19,6 +20,16 @@ class _HomePageState extends State<HomePage> {
 //        amount: 16.53,
 //        date: DateTime.now()),
   ];
+
+  List<Transaction> get _recentTransaction {
+    return _userTransactions.where((tx) {
+      return tx.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
 
   void _addNewTransaction(String txTitle, double txAmount) {
     final newTx = Transaction(
@@ -65,13 +76,8 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              child: Card(
-                color: Colors.lightBlueAccent,
-                child: Text('CHART!'),
-                elevation: 5,
-              ),
+            Chart(
+              recentTransactions: _recentTransaction,
             ),
             TransactionList(
               transaction: _userTransactions,
