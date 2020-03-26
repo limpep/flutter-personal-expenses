@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:personalexpensesapp/components/adaptive_flat_button.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTransaction;
@@ -34,6 +38,22 @@ class _NewTransactionState extends State<NewTransaction> {
 
     widget.addTransaction(enteredTitle, enteredAmount, enteredDate);
     Navigator.pop(context);
+  }
+
+  void _iOSDatePicker() {
+    CupertinoDatePicker(
+      onDateTimeChanged: (newValue) {
+        if (newValue == null) {
+          return;
+        }
+
+        setState(() {
+          _selectedDate = newValue;
+        });
+      },
+      initialDateTime: DateTime.now(),
+      mode: CupertinoDatePickerMode.date,
+    );
   }
 
   void _presentDatePicker() async {
@@ -90,11 +110,8 @@ class _NewTransactionState extends State<NewTransaction> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  FlatButton(
-                    textColor: Colors.lightBlueAccent,
-                    onPressed: _presentDatePicker,
-                    child: Text('Choose a date'),
-                  )
+                  AdaptiveFlatButton('Choose date',
+                      Platform.isIOS ? _iOSDatePicker : _presentDatePicker)
                 ],
               ),
             ),
