@@ -40,22 +40,6 @@ class _NewTransactionState extends State<NewTransaction> {
     Navigator.pop(context);
   }
 
-  void _iOSDatePicker() {
-    CupertinoDatePicker(
-      onDateTimeChanged: (newValue) {
-        if (newValue == null) {
-          return;
-        }
-
-        setState(() {
-          _selectedDate = newValue;
-        });
-      },
-      initialDateTime: DateTime.now(),
-      mode: CupertinoDatePickerMode.date,
-    );
-  }
-
   void _presentDatePicker() async {
     var picker = await showDatePicker(
         context: context,
@@ -110,8 +94,7 @@ class _NewTransactionState extends State<NewTransaction> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  AdaptiveFlatButton('Choose date',
-                      Platform.isIOS ? _iOSDatePicker : _presentDatePicker)
+                  AdaptiveFlatButton('Choose date', _presentDatePicker)
                 ],
               ),
             ),
